@@ -18,7 +18,7 @@ G28 X ; go home X
 G28 Y ; go home Y
 G92 E0 ; reset extruder distance to zero
 G92 Z0 ; you are now at z zero
-G1 Z20 F300 ;  go up 20 mm
+G1 X20 Y20 Z20 F300 ;  go up 20 mm
 G1 E20 F100 ; extrude 20 mm filament
 G4 S5 ; pause for 5 seconds, give user time to wipe
 G1 Z0 F300 ; go back to zero
