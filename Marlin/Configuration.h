@@ -8,11 +8,11 @@
 //User specified version info of THIS file to display in [Pronterface, etc] terminal window during startup.
 //Implementation of an idea by Prof Braino to inform user that any changes made
 //to THIS file by the user have been successfully uploaded into firmware.
-#define STRING_VERSION_CONFIG_H "2012-07-12" //Personal revision number for changes to THIS file.
-#define STRING_CONFIG_H_AUTHOR "ravix" //Who made the changes.
+#define STRING_VERSION_CONFIG_H "2012-08-25" //Personal revision number for changes to THIS file.
+#define STRING_CONFIG_H_AUTHOR "jmil_NextFabStudio_MendelMaxBuildClass" //Who made the changes.
 
 // This determines the communication speed of the printer
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 //#define BAUDRATE 115200
 
 //// The following define selects which electronics board you have. Please choose the one that matches your setup
@@ -46,10 +46,10 @@
 // 6 is EPCOS 100k
 // 7 is 100k Honeywell thermistor 135-104LAG-J01
 
-#define TEMP_SENSOR_0 1
+#define TEMP_SENSOR_0 0
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 60
+#define TEMP_SENSOR_BED 0
 
 // Actual temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 10	// (seconds)
@@ -131,7 +131,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 #define DISABLE_E false // For all extruders
 
 #define INVERT_X_DIR false    // for Mendel set to false, for Orca set to true
-#define INVERT_Y_DIR true    // for Mendel set to true, for Orca set to false
+#define INVERT_Y_DIR false    // for Mendel set to true, for Orca set to false
 #define INVERT_Z_DIR false     // for Mendel set to false, for Orca set to true
 #define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
 #define INVERT_E1_DIR false    // for direct drive extruder v9 set to true, for geared extruder set to false
@@ -145,7 +145,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 
 #define min_software_endstops false //If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  //If true, axis won't move to coordinates greater than the defined lengths below.
-#define X_MAX_LENGTH 245	
+#define X_MAX_LENGTH 220	
 #define Y_MAX_LENGTH 320
 #define Z_MAX_LENGTH 180
 
@@ -161,11 +161,15 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 // default settings 
 
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,1600,761.328}    //mendelmax with MicroExtruder 1.4.2 and PBC Leadscrews 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,1511.81102362205,761.328}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 200}    // (mm/sec)    
-#define DEFAULT_MAX_ACCELERATION      {2000,2000,50,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+// 1/16th stepping on all axes:
+// #define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,1511.81102362205,761.328}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 
-#define DEFAULT_ACCELERATION          4000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
+// 1/4 stepping on Z and E axes for NextFab MendelMax Build Class
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 200}    // (mm/sec)    
+#define DEFAULT_MAX_ACCELERATION      {500,500,50,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+
+#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
 #define DEFAULT_RETRACT_ACCELERATION  1000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
 
 // 
