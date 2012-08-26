@@ -46,10 +46,10 @@
 // 6 is EPCOS 100k
 // 7 is 100k Honeywell thermistor 135-104LAG-J01
 
-#define TEMP_SENSOR_0 0
+#define TEMP_SENSOR_0 1
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 0
+#define TEMP_SENSOR_BED 1
 
 // Actual temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 10	// (seconds)
@@ -147,7 +147,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 #define max_software_endstops true  //If true, axis won't move to coordinates greater than the defined lengths below.
 #define X_MAX_LENGTH 220	
 #define Y_MAX_LENGTH 320
-#define Z_MAX_LENGTH 180
+#define Z_MAX_LENGTH 160
 
 // The position of the homing switches. Use MAX_LENGTH * -0.5 if the center should be 0, 0, 0
 #define X_HOME_POS -8
@@ -164,8 +164,8 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 // 1/16th stepping on all axes:
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,1511.81102362205,761.328}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 
-// 1/4 stepping on Z and E axes for NextFab MendelMax Build Class
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
+// 1/4 stepping on E axis and 1/2 stepping on Z axis for NextFab MendelMax Build Class
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512/2,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 #define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 200}    // (mm/sec)    
 #define DEFAULT_MAX_ACCELERATION      {500,500,50,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
