@@ -165,7 +165,9 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,1511.81102362205,761.328}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 
 // 1/4 stepping on E axis and 1/2 stepping on Z axis for NextFab MendelMax Build Class
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512/2,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512/2,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
+// NOW USING 42BYG48HJ50 Motors from Trinity Labs for E axis
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512/2,360/7.5*50/11/3.1415926535*4}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 #define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 200}    // (mm/sec)    
 #define DEFAULT_MAX_ACCELERATION      {500,500,50,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
