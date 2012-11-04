@@ -45,13 +45,19 @@
 #endif /* 99 */
 
 /****************************************************************************************
-* Gen7 v1.1, v1.2, v1.3 pin assignment
+* Gen7 v1.1, v1.2, v1.3, v1.4 pin assignment
 *
 ****************************************************************************************/
 
+
+#if MOTHERBOARD == 13
+#define MOTHERBOARD 11
+#define GEN7_VERSION 14 // v1.4
+#endif
+
 #if MOTHERBOARD == 12
 #define MOTHERBOARD 11
-#define GEN7_V_1_3
+#define GEN7_VERSION 13 // v1.3
 #endif
 
 #if MOTHERBOARD == 11
@@ -60,6 +66,10 @@
 #if !defined(__AVR_ATmega644P__) && !defined(__AVR_ATmega644__) && !defined(__AVR_ATmega1284P__)
 #error Oops! Make sure you have 'Gen7' selected from the 'Tools -> Boards' menu.
 
+#endif
+
+#ifndef GEN7_VERSION
+#define GEN7_VERSION 12 // v1.x
 #endif
 
 //x axis pins
@@ -81,7 +91,7 @@
 #define Z_DIR_PIN 25
 #define Z_ENABLE_PIN 24
 #define Z_MIN_PIN 1
-#define Z_MAX_PIN 
+#define Z_MAX_PIN 0
 
 //extruder pins
 #define E0_STEP_PIN 28
@@ -103,13 +113,19 @@
 #define SDSS -1 // SCL pin of I2C header
 #define LED_PIN -1
 
-#ifdef GEN7_V_1_3
+#if (GEN7_VERSION >= 13)
 // Gen7 v1.3 removed the fan pin
 #define FAN_PIN -1
 #else
 #define FAN_PIN 31
 #endif
 #define PS_ON_PIN 15
+
+#if (GEN7_VERSION < 14)
+// Gen 1.3 and earlier supplied thermistor power via PS_ON
+// Need to ignore the bad thermistor readings on those units
+#define BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
+#endif
 
 //our pin for debugging.
 #define DEBUG_PIN 0
@@ -231,7 +247,7 @@
 // #define RAMPS_V_1_3
 // #define RAMPS_V_1_0
 
-#ifdef MOTHERBOARD == 33 || MOTHERBOARD == 34
+#if MOTHERBOARD == 33 || MOTHERBOARD == 34
 
 #define X_STEP_PIN         54
 #define X_DIR_PIN          55
@@ -250,6 +266,10 @@
 #define Z_ENABLE_PIN       62
 #define Z_MIN_PIN          18
 #define Z_MAX_PIN          19
+
+#define Z2_STEP_PIN        36
+#define Z2_DIR_PIN         34
+#define Z2_ENABLE_PIN      30
 
 #define E0_STEP_PIN        26
 #define E0_DIR_PIN         28
@@ -288,25 +308,25 @@
 
   #ifdef NEWPANEL
   //arduino pin which triggers an piezzo beeper
-    #define BEEPER 32			// Beeper on AUX-4
+    #define BEEPER 33			// Beeper on AUX-4
 
-    #define LCD_PINS_RS 63 
-    #define LCD_PINS_ENABLE 65
-    #define LCD_PINS_D4 59
-    #define LCD_PINS_D5 64 
-    #define LCD_PINS_D6 44
-    #define LCD_PINS_D7 66
+    #define LCD_PINS_RS 16 
+    #define LCD_PINS_ENABLE 17
+    #define LCD_PINS_D4 23
+    #define LCD_PINS_D5 25 
+    #define LCD_PINS_D6 27
+    #define LCD_PINS_D7 29
     
     //buttons are directly attached using AUX-2
-    #define BTN_EN1 6
-    #define BTN_EN2 5
-    #define BTN_ENC 4  //the click
+    #define BTN_EN1 37
+    #define BTN_EN2 35
+    #define BTN_ENC 31  //the click
     
     #define BLEN_C 2
     #define BLEN_B 1
     #define BLEN_A 0
     
-    #define SDCARDDETECT 42		// Ramps does not use this port
+    #define SDCARDDETECT -1		// Ramps does not use this port
     
       //encoder rotation values
     #define encrot0 0
@@ -382,8 +402,6 @@
 #define LED_PIN            13
 #define PS_ON_PIN          -1
 #define KILL_PIN           -1
-
-
 
 #ifdef RAMPS_V_1_0 // RAMPS_V_1_0
   #define HEATER_0_PIN     12    // RAMPS 1.0
@@ -475,7 +493,9 @@
 #define KNOWN_BOARD 1
 
 #ifndef __AVR_ATmega644P__
-    #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
+#ifndef __AVR_ATmega1284P__
+#error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
+#endif
 #endif
 
 //x axis pins
@@ -523,6 +543,7 @@
     #define LED_PIN         -1    //changed @ rkoeppl 20110410
     #define FAN_PIN         -1    //changed @ rkoeppl 20110410
     #define PS_ON_PIN       -1    //changed @ rkoeppl 20110410
+    #define KILL_PIN        -1    //changed @ drakelive 20120830
     //our pin for debugging.
     
     #define DEBUG_PIN        0
@@ -538,30 +559,51 @@
 * Sanguinololu pin assignment
 *
 ****************************************************************************************/
-#if MOTHERBOARD == 62
+#if MOTHERBOARD == 63
+#define MELZI
+#endif
+#if MOTHERBOARD == 62 || MOTHERBOARD == 63
+#undef MOTHERBOARD
 #define MOTHERBOARD 6
 #define SANGUINOLOLU_V_1_2 
 #endif
 #if MOTHERBOARD == 6
 #define KNOWN_BOARD 1
 #ifndef __AVR_ATmega644P__
+#ifndef __AVR_ATmega1284P__
 #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
+#endif
 #endif
 
 #define X_STEP_PIN         15
 #define X_DIR_PIN          21
-#define X_MIN_PIN          18
-#define X_MAX_PIN           -1
+#if X_HOME_DIR < 0
+# define X_MIN_PIN          18 
+# define X_MAX_PIN          -1
+#else
+# define X_MIN_PIN          -1
+# define X_MAX_PIN          18
+#endif
 
 #define Y_STEP_PIN         22
 #define Y_DIR_PIN          23
-#define Y_MIN_PIN          19
-#define Y_MAX_PIN          -1
+#if Y_HOME_DIR < 0
+# define Y_MIN_PIN          19 
+# define Y_MAX_PIN          -1
+#else
+# define Y_MIN_PIN          -1
+# define Y_MAX_PIN          19
+#endif
 
 #define Z_STEP_PIN         3
 #define Z_DIR_PIN          2
-#define Z_MIN_PIN          20
-#define Z_MAX_PIN          -1
+#if Z_HOME_DIR < 0
+# define Z_MIN_PIN          20 
+# define Z_MAX_PIN          -1
+#else
+# define Z_MIN_PIN          -1
+# define Z_MAX_PIN          20
+#endif
 
 #define E0_STEP_PIN         1
 #define E0_DIR_PIN          0
@@ -569,6 +611,11 @@
 #define LED_PIN            -1
 
 #define FAN_PIN            -1 
+
+#ifdef MELZI
+#define LED_PIN            28
+#define FAN_PIN            4
+#endif
 
 #define PS_ON_PIN          -1
 #define KILL_PIN           -1
@@ -601,6 +648,10 @@
 #define TEMP_BED_PIN        6   // MUST USE ANALOG INPUT NUMBERING NOT DIGITAL OUTPUT NUMBERING!!!!!!!!! (pin 34 bed)
 #define SDPOWER            -1
 #define SDSS               31
+
+#ifdef MELZI
+#define SDSS               24
+#endif
 
 #endif
 
@@ -653,7 +704,7 @@
 
 #define E1_STEP_PIN         49
 #define E1_DIR_PIN          47
-#define E1_ENABLE_PIN       51
+#define E1_ENABLE_PIN       48
 
 #define SDPOWER            -1
 #define SDSS               53
@@ -710,12 +761,20 @@
     #define LCD_PINS_D7 19
     
     //encoder rotation values
-    #define encrot0 0
-    #define encrot1 2
-    #define encrot2 3
-    #define encrot3 1
+    #ifndef ULTIMAKERCONTROLLER
+     #define encrot0 0
+     #define encrot1 2
+     #define encrot2 3
+     #define encrot3 1
+    #else
+     #define encrot0 0
+     #define encrot1 1
+     #define encrot2 3
+     #define encrot3 2
 
-    
+    #endif
+
+    #define SDCARDDETECT -1
     //bits in the shift register that carry the buttons for:
     // left up center down right red
     #define BL_LE 7
@@ -866,7 +925,9 @@
 #define MOTHERBOARD 6
 #define KNOWN_BOARD 1
 #ifndef __AVR_ATmega644P__
+#ifndef __AVR_ATmega1284P__
 #error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu.
+#endif
 #endif
 
 #define X_STEP_PIN         15
@@ -913,28 +974,187 @@
 
 
 
+/****************************************************************************************
+* Open Motion controller with enable based extruders
+*
+*                        ATMega644
+*
+*                        +---\/---+
+*            (D 0) PB0  1|        |40  PA0 (AI 0 / D31)
+*            (D 1) PB1  2|        |39  PA1 (AI 1 / D30)
+*       INT2 (D 2) PB2  3|        |38  PA2 (AI 2 / D29)
+*        PWM (D 3) PB3  4|        |37  PA3 (AI 3 / D28)
+*        PWM (D 4) PB4  5|        |36  PA4 (AI 4 / D27)
+*       MOSI (D 5) PB5  6|        |35  PA5 (AI 5 / D26)
+*       MISO (D 6) PB6  7|        |34  PA6 (AI 6 / D25)
+*        SCK (D 7) PB7  8|        |33  PA7 (AI 7 / D24)
+*                  RST  9|        |32  AREF
+*                  VCC 10|        |31  GND 
+*                  GND 11|        |30  AVCC
+*                XTAL2 12|        |29  PC7 (D 23)
+*                XTAL1 13|        |28  PC6 (D 22)
+*       RX0 (D 8)  PD0 14|        |27  PC5 (D 21) TDI
+*       TX0 (D 9)  PD1 15|        |26  PC4 (D 20) TDO
+*  INT0 RX1 (D 10) PD2 16|        |25  PC3 (D 19) TMS
+*  INT1 TX1 (D 11) PD3 17|        |24  PC2 (D 18) TCK
+*       PWM (D 12) PD4 18|        |23  PC1 (D 17) SDA
+*       PWM (D 13) PD5 19|        |22  PC0 (D 16) SCL
+*       PWM (D 14) PD6 20|        |21  PD7 (D 15) PWM
+*                        +--------+
+*
+****************************************************************************************/
+#if MOTHERBOARD == 90 //Alpha OMCA board
+#define KNOWN_BOARD 1
+
+#ifndef __AVR_ATmega644__
+#error Oops!  Make sure you have 'SanguinoA' selected from the 'Tools -> Boards' menu.
+#endif
+
+#define X_STEP_PIN         21
+#define X_DIR_PIN          20
+#define X_ENABLE_PIN       24
+#define X_MIN_PIN          0
+#define X_MAX_PIN          -1
+
+#define Y_STEP_PIN         23
+#define Y_DIR_PIN          22
+#define Y_ENABLE_PIN       24
+#define Y_MIN_PIN          1
+#define Y_MAX_PIN          -1
+
+#define Z_STEP_PIN         26
+#define Z_DIR_PIN          25
+#define Z_ENABLE_PIN       24
+#define Z_MIN_PIN          2
+#define Z_MAX_PIN          -1
+
+#define E0_STEP_PIN         28
+#define E0_DIR_PIN          27
+#define E0_ENABLE_PIN       24
+
+#define E1_STEP_PIN         -1 // 19
+#define E1_DIR_PIN          -1 // 18
+#define E1_ENABLE_PIN       24
+
+#define E2_STEP_PIN         -1 // 17
+#define E2_DIR_PIN          -1 // 16
+#define E2_ENABLE_PIN       24
+
+#define SDPOWER            -1
+#define SDSS               11
+#define SDCARDDETECT       -1 // 10 optional also used as mode pin
+#define LED_PIN            -1
+#define FAN_PIN            3
+#define PS_ON_PIN          -1
+#define KILL_PIN           -1
+
+#define HEATER_0_PIN       4
+#define HEATER_1_PIN       -1 // 12 
+#define HEATER_2_PIN       -1 // 13
+#define TEMP_0_PIN          0 //D27   // MUST USE ANALOG INPUT NUMBERING NOT DIGITAL OUTPUT NUMBERING!!!!!!!!!
+#define TEMP_1_PIN         -1 // 1
+#define TEMP_2_PIN         -1 // 2
+#define HEATER_BED_PIN     -1 // 14/15
+#define TEMP_BED_PIN       -1 // 1,2 or I2C
+/*  Unused (1) (2) (3) 4 5 6 7 8 9 10 11 12 13 (14) (15) (16) 17 (18) (19) (20) (21) (22) (23) 24 (25) (26) (27) 28 (29) (30) (31)  */
+
+#endif
+
+#if MOTHERBOARD == 91  // Final OMCA board -- REF http://sanguino.cc/hardware
+#define KNOWN_BOARD 1
+
+#if !defined(__AVR_ATmega644P__) && !defined(__AVR_ATmega644__)
+#error Oops!  Make sure you have 'Sanguino' selected from the 'Tools -> Boards' menu. (Final OMCA board)
+#endif
+
+#define X_STEP_PIN         26
+#define X_DIR_PIN          25
+#define X_ENABLE_PIN       10
+#define X_MIN_PIN          0
+#define X_MAX_PIN          -1
+
+#define Y_STEP_PIN         28
+#define Y_DIR_PIN          27
+#define Y_ENABLE_PIN       10
+#define Y_MIN_PIN          1
+#define Y_MAX_PIN          -1
+
+#define Z_STEP_PIN         23
+#define Z_DIR_PIN          22
+#define Z_ENABLE_PIN       10
+#define Z_MIN_PIN          2
+#define Z_MAX_PIN          -1
+
+#define E0_STEP_PIN         24
+#define E0_DIR_PIN          21
+#define E0_ENABLE_PIN       10
+
+/* future proofing */
+#define __FS	20
+#define __FD	19
+#define __GS	18
+#define __GD	13
+
+#define UNUSED_PWM           14	/* PWM on LEFT connector */
+
+#define E1_STEP_PIN         -1 // 21
+#define E1_DIR_PIN          -1 // 20
+#define E1_ENABLE_PIN       -1 // 19
+
+#define E2_STEP_PIN         -1 // 21
+#define E2_DIR_PIN          -1 // 20
+#define E2_ENABLE_PIN       -1 // 18
+
+#define SDPOWER            -1
+#define SDSS               11
+#define SDCARDDETECT       -1 // 10 optional also used as mode pin
+#define LED_PIN            -1
+#define FAN_PIN            14 /* PWM on MIDDLE connector */
+#define PS_ON_PIN          -1
+#define KILL_PIN           -1
+
+#define HEATER_0_PIN        3 /*DONE PWM on RIGHT connector */
+#define HEATER_1_PIN       -1 
+#define HEATER_2_PIN       -1
+#define HEATER_1_PIN       -1 
+#define HEATER_2_PIN       -1
+#define TEMP_0_PIN          0 // ANALOG INPUT NUMBERING 
+#define TEMP_1_PIN          1 // ANALOG
+#define TEMP_2_PIN         -1 // 2
+#define HEATER_BED_PIN      4
+#define TEMP_BED_PIN        2 // 1,2 or I2C
+
+#define I2C_SCL				16
+#define I2C_SDA				17
+
+#endif
+
 
 #ifndef KNOWN_BOARD
 #error Unknown MOTHERBOARD value in configuration.h
 #endif
 
 //List of pins which to ignore when asked to change by gcode, 0 and 1 are RX and TX, do not mess with those!
-#define _E0_PINS E0_STEP_PIN, E0_DIR_PIN, E0_ENABLE_PIN
-#if EXTRUDERS == 3
-  #define _E1_PINS E1_STEP_PIN, E1_DIR_PIN, E1_ENABLE_PIN
-  #define _E2_PINS E2_STEP_PIN, E2_DIR_PIN, E2_ENABLE_PIN
-#elif EXTRUDERS == 2
-  #define _E1_PINS E1_STEP_PIN, E1_DIR_PIN, E1_ENABLE_PIN
-  #define _E2_PINS -1
-#elif EXTRUDERS == 1
-  #define _E1_PINS -1 
-  #define _E2_PINS -1
+#define _E0_PINS E0_STEP_PIN, E0_DIR_PIN, E0_ENABLE_PIN, HEATER_0_PIN, 
+#if EXTRUDERS > 1
+  #define _E1_PINS E1_STEP_PIN, E1_DIR_PIN, E1_ENABLE_PIN, HEATER_1_PIN,
 #else
-  #error Unsupported number of extruders
+  #define _E1_PINS
 #endif
+#if EXTRUDERS > 2
+  #define _E2_PINS E2_STEP_PIN, E2_DIR_PIN, E2_ENABLE_PIN, HEATER_2_PIN,
+#else
+  #define _E2_PINS
+#endif
+
+#ifdef DISABLE_MAX_ENDSTOPS
+#define X_MAX_PIN          -1
+#define Y_MAX_PIN          -1
+#define Z_MAX_PIN          -1
+#endif
+
 #define SENSITIVE_PINS {0, 1, X_STEP_PIN, X_DIR_PIN, X_ENABLE_PIN, X_MIN_PIN, X_MAX_PIN, Y_STEP_PIN, Y_DIR_PIN, Y_ENABLE_PIN, Y_MIN_PIN, Y_MAX_PIN, Z_STEP_PIN, Z_DIR_PIN, Z_ENABLE_PIN, Z_MIN_PIN, Z_MAX_PIN, LED_PIN, PS_ON_PIN, \
-                        HEATER_0_PIN, HEATER_1_PIN, HEATER_2_PIN, \
                         HEATER_BED_PIN, FAN_PIN,                  \
-                        _E0_PINS, _E1_PINS, _E2_PINS,             \
+                        _E0_PINS _E1_PINS _E2_PINS             \
                         TEMP_0_PIN, TEMP_1_PIN, TEMP_2_PIN, TEMP_BED_PIN }
 #endif
