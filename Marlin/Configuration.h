@@ -191,7 +191,7 @@
   #define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
-  //#define ENDSTOPPULLUP_ZMIN
+  #define ENDSTOPPULLUP_ZMIN
 #endif
 
 #ifdef ENDSTOPPULLUPS
@@ -259,7 +259,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
-#define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0}  // set the homing speeds (mm/min)
+#define HOMING_FEEDRATE {50*60, 50*60, 10*60, 0}  // set the homing speeds (mm/min)
 
 // default settings 
 
@@ -271,7 +271,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   {80,80,377.952755905512/2,190.332}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
 // NOW USING 42BYG48HJ50 Motors from Trinity Labs for E axis
 #define DEFAULT_AXIS_STEPS_PER_UNIT   {80, 80, 377.952755905512/2, 360/7.5*50/11/3.1415926535*4}    //mendelmax with MicroExtruder 1.4.2 and Precision ACME Leadscrews 
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 200}    // (mm/sec)    
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 10, 200}    // (mm/sec)    
 #define DEFAULT_MAX_ACCELERATION      {500,500,50,500}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
 #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
