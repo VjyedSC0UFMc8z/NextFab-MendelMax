@@ -20,8 +20,8 @@ G92 E0 ; reset extruder distance to zero
 G1 Z20 F300 ;  go up 20 mm
 G1 E20 F100 ; extrude 20 mm filament
 G4 S5 ; pause for 5 seconds, give user time to wipe
-G1 Z0 F300 ; go back to zero
-G92 E0 ; reset extruder distance to zero
+; G1 Z0 F300 ; go back to zero
+G1 X40 Y40 F3000 ; go inside the plate printable area
 M107 ; Make sure fan is off
 G90 ; use absolute coordinates
 G21 ; set units to millimeters
